@@ -1,41 +1,37 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import BottomNavigation from './BottomNavigation';
+import ConversationSidebar from './ConversationSidebar';
 import ChatWindow from './ChatWindow';
-import ConversationList from './ConversationList';
 
 export default function ChatLayout() {
-  const [currentView, setCurrentView] = useState('chat'); // 'chat' or 'conversations'
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex flex-col h-full overflow-hidden bg-gemini-background text-white">
-      <AnimatePresence mode="wait">
-        {currentView === 'chat' ? (
+    <div className="flex h-full overflow-hidden bg-gemini-background text-white">
+      {/* Sidebar backdrop for mobile */}
+      <AnimatePresence>
+        {sidebarOpen && (
           <motion.div
-            key="chat"
-            className="flex-1 flex flex-col h-full"
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-          >
-            <ChatWindow />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="conversations"
-            className="flex-1 flex flex-col h-full"
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 100 }}
-            transition={{ duration: 0.2 }}
-          >
-            <ConversationList onSelectConversation={() => setCurrentView('chat')} />
-          </motion.div>
+            className="fixed inset-0 z-20 bg-black bg-opacity-50 md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
         )}
       </AnimatePresence>
       
-      <BottomNavigation currentView={currentView} setCurrentView={setCurrentView} />
+      {/* Sidebar with animation */}
+      <ConversationSidebar 
+        isOpen={sidebarOpen} 
+        onClose={() => setSidebarOpen(false)} 
+      />
+      
+      {/* Main content */}
+      <div className="flex-1 flex flex-col h-full">
+        <ChatWindow onOpenSidebar={() => setSidebarOpen(true)} />
+      </div>
     </div>
   );
 }

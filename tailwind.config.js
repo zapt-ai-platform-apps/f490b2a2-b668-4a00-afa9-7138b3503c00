@@ -10,11 +10,11 @@ export default {
                     blue: '#8ab4f8',
                     purple: '#c58af9',
                     teal: '#78d9ec',
-                    navy: '#1f1f1f',
-                    surface: '#303030',
-                    background: '#1e1e1e',
-                    'user-bubble': '#5e5e5e',
-                    'ai-bubble': '#303030',
+                    navy: '#202124',
+                    surface: '#303134',
+                    background: '#202124',
+                    'user-bubble': '#444746',
+                    'ai-bubble': '#303134',
                 }
             },
             borderRadius: {

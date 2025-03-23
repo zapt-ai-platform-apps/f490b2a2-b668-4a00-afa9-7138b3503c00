@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/atom-one-dark.css';
+import 'highlight.js/styles/github-dark.css';
 import { motion } from 'framer-motion';
-import { FaRobot } from 'react-icons/fa';
+import { FaRobot, FaUser } from 'react-icons/fa';
 
 // Initialize highlight.js
 hljs.configure({

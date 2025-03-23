@@ -17,35 +17,39 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   @apply bg-gemini-background text-white;
-  overscroll-behavior: none;
 }
 
 .gemini-gradient {
   background: linear-gradient(135deg, #8ab4f8 0%, #c58af9 50%, #78d9ec 100%);
 }
 
-/* Bottom nav specific styles */
-.bottom-nav-item {
-  @apply flex flex-col items-center justify-center;
-  transition: color 0.2s ease;
+.chat-container {
+  position: fixed;
+  bottom: 75px;
+  right: 20px;
+  width: 360px;
+  height: 500px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  z-index: 50;
 }
 
-.bottom-nav-item.active {
-  @apply text-gemini-purple;
-}
-
-.bottom-nav-label {
-  @apply text-xs mt-1;
-  transition: opacity 0.2s ease;
+@media (max-width: 640px) {
+  .chat-container {
+    width: calc(100% - 40px);
+    height: 50vh;
+  }
 }
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -111,39 +115,4 @@ body {
 
 .bubble-animation {
   animation: bubbleIn 0.3s ease-out forwards;
-}
-
-/* Bottom sheet animations */
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-.slide-up {
-  animation: slideUp 0.3s ease-out forwards;
-}
-
-/* Chat container for mobile view */
-.chat-container {
-  position: fixed;
-  bottom: 75px;
-  right: 20px;
-  width: 360px;
-  height: 500px;
-  background-color: #1a1a1a;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-  z-index: 50;
-}
-
-@media (max-width: 640px) {
-  .chat-container {
-    width: calc(100% - 40px);
-    height: 50vh;
-  }
 }

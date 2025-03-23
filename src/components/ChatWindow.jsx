@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaStream } from 'react-icons/fa';
+import { FaBars, FaStream } from 'react-icons/fa';
 import { useChatContext } from '../contexts/ChatContext';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 
-export default function ChatWindow() {
+export default function ChatWindow({ onOpenSidebar }) {
   const { 
     activeConversation, 
     streamingMessage, 
@@ -26,14 +26,23 @@ export default function ChatWindow() {
     <div className="flex flex-col h-full">
       {/* Header - Gemini style */}
       <motion.header 
-        className="flex items-center justify-between py-3 px-4 bg-gemini-navy z-10"
+        className="flex items-center justify-between py-3 px-4 bg-gemini-navy z-10 border-b border-gemini-surface"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <h1 className="text-lg font-medium text-white mx-auto">
-          {activeConversation.title || 'New Chat'}
-        </h1>
+        <div className="flex items-center">
+          <button
+            onClick={onOpenSidebar}
+            className="p-2 rounded-full text-white hover:bg-gemini-surface cursor-pointer"
+            aria-label="Open sidebar"
+          >
+            <FaBars size={20} />
+          </button>
+          <h1 className="ml-3 text-lg font-medium text-white">
+            {activeConversation.title || 'New Chat'}
+          </h1>
+        </div>
         
         <button
           onClick={() => setUseStreamingMode(!useStreamingMode)}
@@ -43,6 +52,7 @@ export default function ChatWindow() {
               : 'bg-gemini-surface text-gray-400'
           } cursor-pointer`}
           title={useStreamingMode ? 'Streaming mode on' : 'Streaming mode off'}
+          aria-label={useStreamingMode ? 'Turn streaming mode off' : 'Turn streaming mode on'}
         >
           <FaStream size={16} />
         </button>
