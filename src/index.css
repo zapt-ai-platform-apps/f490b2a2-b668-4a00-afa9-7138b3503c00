@@ -16,7 +16,11 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  @apply bg-gray-900 text-white;
+  @apply bg-gemini-background text-white;
+}
+
+.gemini-gradient {
+  background: linear-gradient(135deg, #8ab4f8 0%, #c58af9 50%, #78d9ec 100%);
 }
 
 .chat-container {
@@ -71,4 +75,44 @@ body {
 .prose h3,
 .prose h4 {
   @apply text-white;
+}
+
+/* Input animation */
+@keyframes inputFocus {
+  0% { box-shadow: 0 0 0 0 rgba(138, 180, 248, 0.5); }
+  100% { box-shadow: 0 0 0 4px rgba(138, 180, 248, 0.5); }
+}
+
+.input-focus-animation:focus {
+  animation: inputFocus 0.3s ease-out forwards;
+}
+
+/* Loading dots animation */
+.typing-dots::after {
+  content: '';
+  animation: typing 1.5s infinite;
+}
+
+@keyframes typing {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+  100% { content: ''; }
+}
+
+/* Message bubble animations */
+@keyframes bubbleIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bubble-animation {
+  animation: bubbleIn 0.3s ease-out forwards;
 }

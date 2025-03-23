@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
-import { FaPaperPlane } from 'react-icons/fa';
+import { FaPaperPlane, FaMicrophone } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 import { useChatContext } from '../contexts/ChatContext';
 
 export default function ChatInput() {
@@ -31,39 +32,52 @@ export default function ChatInput() {
   }, []);
 
   return (
-    <div className="border-t border-gray-700 bg-gray-800 py-4">
+    <motion.div 
+      className="fixed bottom-0 w-full px-4 py-3 bg-gemini-navy border-t border-gemini-surface z-10"
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       <form 
         onSubmit={handleSubmit}
-        className="max-w-4xl mx-auto px-4 sm:px-6"
+        className="max-w-3xl mx-auto"
       >
         <div className="relative flex items-center">
+          {/* Microphone button (non-functional, just for UI) */}
+          <button
+            type="button"
+            className="absolute left-3 p-2 text-gray-400 hover:text-gemini-blue bg-transparent rounded-full focus:outline-none cursor-pointer"
+            aria-label="Voice input"
+          >
+            <FaMicrophone size={18} />
+          </button>
+          
           <TextareaAutosize
             ref={textareaRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask Astra something..."
-            className="w-full py-3 px-4 pr-12 bg-gray-700 border border-gray-600 rounded-lg resize-none text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent box-border"
-            maxRows={5}
+            placeholder="Message Astra..."
+            className="w-full py-3 pl-12 pr-12 bg-gemini-surface border-none rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gemini-blue input-focus-animation box-border resize-none"
+            maxRows={3}
             disabled={isProcessing}
           />
-          <button
+          
+          <motion.button
             type="submit"
-            className={`absolute right-3 p-2 rounded-md ${
+            whileTap={{ scale: 0.9 }}
+            className={`absolute right-3 p-2 rounded-full ${
               input.trim() && !isProcessing
-                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white cursor-pointer'
+                ? 'gemini-gradient text-white cursor-pointer'
                 : 'bg-gray-600 text-gray-400 cursor-not-allowed'
             }`}
             disabled={!input.trim() || isProcessing}
             aria-label="Send message"
           >
             <FaPaperPlane size={16} />
-          </button>
-        </div>
-        <div className="mt-2 text-center text-xs text-gray-400">
-          {isProcessing ? 'Astra is thinking...' : 'Press Enter to send, Shift+Enter for new line'}
+          </motion.button>
         </div>
       </form>
-    </div>
+    </motion.div>
   );
 }

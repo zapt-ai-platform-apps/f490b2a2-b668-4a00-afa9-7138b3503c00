@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { FaBars, FaStream } from 'react-icons/fa';
 import { useChatContext } from '../contexts/ChatContext';
 import ChatMessage from './ChatMessage';
@@ -23,40 +24,43 @@ export default function ChatWindow({ onOpenSidebar }) {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Header */}
-      <header className="bg-gray-900 border-b border-gray-800 py-3 px-4 sm:px-6 flex items-center justify-between">
+      {/* Header - Gemini style */}
+      <motion.header 
+        className="flex items-center justify-between py-3 px-4 bg-gemini-navy z-10"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.3 }}
+      >
         <div className="flex items-center">
           <button
             onClick={onOpenSidebar}
-            className="md:hidden mr-4 p-1 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 cursor-pointer"
+            className="p-2 rounded-full text-white hover:bg-gemini-surface cursor-pointer"
             aria-label="Open sidebar"
           >
             <FaBars size={20} />
           </button>
-          <h1 className="text-lg font-semibold text-white">
+          <h1 className="ml-3 text-lg font-medium text-white">
             {activeConversation.title || 'New Chat'}
           </h1>
         </div>
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-400 mr-2">Streaming:</span>
-          <button
-            onClick={() => setUseStreamingMode(!useStreamingMode)}
-            className={`p-1.5 rounded-md cursor-pointer ${
-              useStreamingMode
-                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white'
-                : 'bg-gray-700 text-gray-400'
-            }`}
-            title={useStreamingMode ? 'Streaming mode on' : 'Streaming mode off'}
-            aria-label={useStreamingMode ? 'Turn streaming mode off' : 'Turn streaming mode on'}
-          >
-            <FaStream size={16} />
-          </button>
-        </div>
-      </header>
+        
+        <button
+          onClick={() => setUseStreamingMode(!useStreamingMode)}
+          className={`p-2 rounded-full ${
+            useStreamingMode
+              ? 'gemini-gradient text-white'
+              : 'bg-gemini-surface text-gray-400'
+          } cursor-pointer`}
+          title={useStreamingMode ? 'Streaming mode on' : 'Streaming mode off'}
+          aria-label={useStreamingMode ? 'Turn streaming mode off' : 'Turn streaming mode on'}
+        >
+          <FaStream size={16} />
+        </button>
+      </motion.header>
       
-      {/* Chat messages */}
-      <div className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-900 to-gray-800">
-        <div className="pb-10">
+      {/* Chat messages with padding for input */}
+      <div className="flex-1 overflow-y-auto pb-24">
+        <div className="pt-2 pb-4">
           {activeConversation.messages.map((message) => (
             <ChatMessage key={message.id} message={message} />
           ))}
@@ -70,7 +74,7 @@ export default function ChatWindow({ onOpenSidebar }) {
         </div>
       </div>
       
-      {/* Input area */}
+      {/* Input area - Handled by ChatInput component with fixed positioning */}
       <ChatInput />
     </div>
   );

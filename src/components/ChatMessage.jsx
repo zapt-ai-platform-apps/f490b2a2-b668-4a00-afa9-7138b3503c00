@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
+import { motion } from 'framer-motion';
 import { FaRobot, FaUser } from 'react-icons/fa';
 
 // Initialize highlight.js
@@ -13,11 +14,6 @@ hljs.configure({
 export default function ChatMessage({ message, isStreaming = false }) {
   const { role, content, isError } = message;
   
-  // Format the timestamp to a readable format
-  const formattedTime = message.timestamp 
-    ? new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    : '';
-
   // Apply syntax highlighting to code blocks
   useEffect(() => {
     document.querySelectorAll('pre code').forEach((block) => {
@@ -25,47 +21,50 @@ export default function ChatMessage({ message, isStreaming = false }) {
     });
   }, [content]);
 
+  // User message in a right-aligned bubble
+  if (role === 'user') {
+    return (
+      <motion.div 
+        className="flex justify-end px-4 py-2"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="max-w-[85%] sm:max-w-[75%] bg-gemini-user-bubble rounded-2xl rounded-tr-sm px-4 py-3 shadow-gemini">
+          <p className="text-white break-words">{content}</p>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // AI message in a left-aligned bubble with icon
   return (
-    <div className={`flex w-full py-4 ${role === 'assistant' ? 'bg-gray-900 bg-opacity-30' : ''}`}>
-      <div className="max-w-4xl mx-auto flex w-full px-4 sm:px-6 space-x-4">
-        {/* Avatar */}
-        <div className="flex-shrink-0">
-          {role === 'assistant' ? (
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-400 flex items-center justify-center text-white">
-              <FaRobot />
-            </div>
-          ) : (
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center text-white">
-              <FaUser />
-            </div>
-          )}
+    <motion.div 
+      className="flex px-4 py-2"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="flex items-start space-x-3 max-w-[85%] sm:max-w-[75%]">
+        <div className="flex-shrink-0 w-8 h-8 rounded-full gemini-gradient flex items-center justify-center mt-1">
+          <FaRobot className="text-white" size={16} />
         </div>
         
-        {/* Message content */}
-        <div className="flex-1 space-y-1">
-          <div className="flex items-center">
-            <h4 className="font-semibold text-sm text-gray-100">
-              {role === 'assistant' ? 'Astra' : 'You'}
-            </h4>
-            <span className="ml-2 text-xs text-gray-400">
-              {formattedTime}
-            </span>
-          </div>
-          
-          <div className={`prose prose-invert max-w-none ${isError ? 'text-red-400' : ''} ${isStreaming ? 'animate-pulse' : ''}`}>
+        <div className={`bg-gemini-ai-bubble rounded-2xl rounded-tl-sm px-4 py-3 shadow-gemini ${isStreaming ? 'typing-dots' : ''} ${isError ? 'border border-red-500' : ''}`}>
+          <div className="prose prose-invert max-w-none">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
                 code({ node, inline, className, children, ...props }) {
                   const match = /language-(\w+)/.exec(className || '');
                   return !inline && match ? (
-                    <pre className="rounded-md bg-gray-800 p-4 overflow-x-auto">
+                    <pre className="rounded-lg bg-black bg-opacity-50 p-4 overflow-x-auto">
                       <code className={`language-${match[1]}`} {...props}>
                         {String(children).replace(/\n$/, '')}
                       </code>
                     </pre>
                   ) : (
-                    <code className="bg-gray-800 px-1.5 py-0.5 rounded text-sm" {...props}>
+                    <code className="bg-black bg-opacity-30 px-1.5 py-0.5 rounded text-sm" {...props}>
                       {children}
                     </code>
                   );
@@ -74,7 +73,7 @@ export default function ChatMessage({ message, isStreaming = false }) {
                   return <div className="not-prose">{children}</div>;
                 },
                 p({ children }) {
-                  return <p className="mb-4 last:mb-0">{children}</p>;
+                  return <p className="mb-4 last:mb-0 text-white">{children}</p>;
                 },
                 a({ children, href }) {
                   return (
@@ -82,7 +81,7 @@ export default function ChatMessage({ message, isStreaming = false }) {
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-400 hover:text-blue-300 underline"
+                      className="text-gemini-blue hover:underline"
                     >
                       {children}
                     </a>
@@ -99,7 +98,7 @@ export default function ChatMessage({ message, isStreaming = false }) {
                 },
                 blockquote({ children }) {
                   return (
-                    <blockquote className="border-l-4 border-gray-700 pl-4 italic my-4">
+                    <blockquote className="border-l-4 border-gemini-blue pl-4 italic my-4">
                       {children}
                     </blockquote>
                   );
@@ -120,6 +119,6 @@ export default function ChatMessage({ message, isStreaming = false }) {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
