@@ -33,7 +33,7 @@ export default function ChatInput() {
 
   return (
     <motion.div 
-      className="fixed bottom-0 w-full px-4 py-3 bg-gemini-navy border-t border-gemini-surface z-10"
+      className="fixed bottom-16 left-0 right-0 px-4 py-3 bg-gemini-background z-10"
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}

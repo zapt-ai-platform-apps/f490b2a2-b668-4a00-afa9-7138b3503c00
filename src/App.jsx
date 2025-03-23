@@ -8,7 +8,7 @@ export default function App() {
       <ChatProvider>
         <ChatLayout />
       </ChatProvider>
-      <div className="fixed bottom-4 left-4 text-xs text-gray-400">
+      <div className="fixed bottom-20 left-4 text-xs text-gray-400 z-10">
         <a href="https://www.zapt.ai" target="_blank" rel="noopener noreferrer" className="hover:text-gemini-purple transition-colors">
           Made on ZAPT
         </a>

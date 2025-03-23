@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaBars, FaStream } from 'react-icons/fa';
+import { FaStream } from 'react-icons/fa';
 import { useChatContext } from '../contexts/ChatContext';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 
-export default function ChatWindow({ onOpenSidebar }) {
+export default function ChatWindow() {
   const { 
     activeConversation, 
     streamingMessage, 
@@ -31,18 +31,9 @@ export default function ChatWindow({ onOpenSidebar }) {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="flex items-center">
-          <button
-            onClick={onOpenSidebar}
-            className="p-2 rounded-full text-white hover:bg-gemini-surface cursor-pointer"
-            aria-label="Open sidebar"
-          >
-            <FaBars size={20} />
-          </button>
-          <h1 className="ml-3 text-lg font-medium text-white">
-            {activeConversation.title || 'New Chat'}
-          </h1>
-        </div>
+        <h1 className="text-lg font-medium text-white mx-auto">
+          {activeConversation.title || 'New Chat'}
+        </h1>
         
         <button
           onClick={() => setUseStreamingMode(!useStreamingMode)}
@@ -52,7 +43,6 @@ export default function ChatWindow({ onOpenSidebar }) {
               : 'bg-gemini-surface text-gray-400'
           } cursor-pointer`}
           title={useStreamingMode ? 'Streaming mode on' : 'Streaming mode off'}
-          aria-label={useStreamingMode ? 'Turn streaming mode off' : 'Turn streaming mode on'}
         >
           <FaStream size={16} />
         </button>

@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
 import { motion } from 'framer-motion';
-import { FaRobot, FaUser } from 'react-icons/fa';
+import { FaRobot } from 'react-icons/fa';
 
 // Initialize highlight.js
 hljs.configure({
